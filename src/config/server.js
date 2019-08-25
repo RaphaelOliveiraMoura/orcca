@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const serverConfigurations = {
   port: process.env.PORT || 5050,
   protectKey: process.env.PROTECT_KEY,
