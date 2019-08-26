@@ -6,7 +6,13 @@
   "author": "Raphael <raphaeldeoliveiramoura@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "generate:model": "npx sequelize-cli model:generate --name AUTO_GENERATED_MODEL --attributes ATRIBUTO1:string",
+    "generate:seed": "npx sequelize-cli seed:generate --name AUTO_GENERATED_SEED",
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "db:migrate:undo": "npx sequelize-cli db:migrate:undo:all",
+    "db:seed": "npx sequelize-cli db:seed:all",
+    "db:seed:undo": "npx sequelize-cli db:seed:undo:all"
   },
   "dependencies": {
     "cors": "^2.8.5",
