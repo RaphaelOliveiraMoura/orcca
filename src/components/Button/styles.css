@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Lexend+Exa&display=swap');
+
+.button-container {
+  font-family: 'Lexend Exa', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #3c95e1fa;
+  color: #efefef;
+  width: fit-content;
+  padding: 10px 8px;
+  border-top-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top: 1px solid rgba(400, 400, 400, 0.6);
+  border-left: 1px solid rgba(400, 400, 400, 0.6);
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.4s;
+}
+
+.button-container:hover {
+  border-bottom: 1px solid rgba(400, 400, 400, 0.6);
+  border-right: 1px solid rgba(400, 400, 400, 0.6);
+  border-top: none;
+  border-left: none;
+  transition: all 0.4s;
+}
