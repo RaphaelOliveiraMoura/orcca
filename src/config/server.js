@@ -8,7 +8,8 @@ const serverConfigurations = {
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
     host: process.env.DATABASE_HOST,
-    dialect: process.env.DATABASE_DIALECT
+    dialect: process.env.DATABASE_DIALECT,
+    logging: process.env.DATABASE_LOG == 'true' ? true : false
   }
 };
 

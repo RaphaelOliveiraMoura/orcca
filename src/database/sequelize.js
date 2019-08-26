@@ -7,15 +7,16 @@ const {
   password,
   host,
   dialect,
-  port
+  port,
+  logging
 } = databaseConfigurations;
 
 const sequelize = new Sequelize(database, username, password, {
   host,
   dialect,
   port,
+  logging,
   define: {
-    paranoid: false,
     timestamps: true,
     freezeTableName: true,
     underscored: true
