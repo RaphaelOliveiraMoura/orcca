@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 // import Button from '../components/Button/Button';
 import Input from '../components/Input/Input';
 import Loader from '../components/Loader/Loader';
-import Header from '../components/Header/Header';
 
 import './styles.css';
 
@@ -16,7 +15,6 @@ function App() {
   return (
     <>
       {/* <Loader /> */}
-      <Header />
       <form onSubmit={e => e.preventDefault()}>
         <Input
           placeholder="Digite seu cep"
