@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   background-color: #444e;
-  z-index: 5;
+  z-index: 9999;
 }
 
 .loader {
