@@ -13,9 +13,16 @@ module.exports = (sequelize, DataTypes) => {
       cpf: DataTypes.STRING,
       login: DataTypes.STRING,
       password: DataTypes.STRING,
-      birth_date: DataTypes.DATE,
-      phone_number: DataTypes.STRING,
-      rule_id: {
+      birthDate: {
+        field: 'birth_date',
+        type: DataTypes.DATE
+      },
+      phoneNumber: {
+        field: 'phone_number',
+        type: DataTypes.STRING
+      },
+      ruleId: {
+        field: 'rule_id',
         type: DataTypes.INTEGER,
         references: {
           model: 'EmployeeRules',
@@ -35,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
   Employees.associate = function(models) {
     Employees.belongsTo(models.EmployeeRules, {
       as: 'rule',
-      foreignKey: 'rule_id'
+      foreignKey: 'ruleId'
     });
   };
   return Employees;

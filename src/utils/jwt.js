@@ -8,9 +8,9 @@ function generateToken(id, rule) {
 
 function verifyToken(token) {
   try {
-    const { id, rule } = jwt.verify(token, protectKey);
-    if (!id || !rule) return false;
-    return { id, rule };
+    const payload = jwt.verify(token, protectKey);
+    if (!payload || !payload.id || !payload.rule) return false;
+    return payload;
   } catch (error) {
     return false;
   }
