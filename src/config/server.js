@@ -1,12 +1,15 @@
+require('dotenv').config();
+
 const serverConfigurations = {
   port: process.env.PORT || 5050,
   protectKey: process.env.PROTECT_KEY,
   database: {
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
-    name: process.env.DATABASE_NAME,
+    database: process.env.DATABASE_NAME,
     host: process.env.DATABASE_HOST,
-    dialect: process.env.DATABASE_DIALECT
+    dialect: process.env.DATABASE_DIALECT,
+    logging: process.env.DATABASE_LOG == 'true' ? true : false
   }
 };
 
