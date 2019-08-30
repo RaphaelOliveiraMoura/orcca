@@ -1,4 +1,6 @@
 'use strict';
+const { encrypt } = require('../utils/encrypt');
+
 module.exports = (sequelize, DataTypes) => {
   const Employees = sequelize.define(
     'Employees',
@@ -22,11 +24,17 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     {
-      tableName: 'employees'
+      tableName: 'employees',
+      hooks: {
+        beforeValidate: (employee, options) => {
+          employee.password = encrypt(employee.password);
+        }
+      }
     }
   );
   Employees.associate = function(models) {
     Employees.belongsTo(models.EmployeeRules, {
+      as: 'rule',
       foreignKey: 'rule_id'
     });
   };
