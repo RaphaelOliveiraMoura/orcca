@@ -6,13 +6,16 @@ module.exports = {
       'employee_rules',
       [
         {
-          description: 'admin'
+          name: 'admin',
+          description: 'Administrador(a)'
         },
         {
-          description: 'social_worker'
+          name: 'social_worker',
+          description: 'Assistente Social'
         },
         {
-          description: 'clerk'
+          name: 'clerk',
+          description: 'Atendente'
         }
       ],
       {}
@@ -20,6 +23,15 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('employee_rules', null, {});
+    return queryInterface.sequelize
+      .query('SET FOREIGN_KEY_CHECKS = 0;')
+      .then(() => {
+        return queryInterface.bulkDelete('employee_rules', null, {
+          truncate: true
+        });
+      })
+      .then(() => {
+        return queryInterface.sequelize.query('SET FOREIGN_KEY_CHECKS = 1;');
+      });
   }
 };

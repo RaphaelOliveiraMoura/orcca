@@ -1,11 +1,11 @@
-const { Employees, EmployeeRules } = require('./index');
+const { Employees, EmployeeRules, States, Cities } = require('./index');
 
-Employees.findAll({
-  include: ['rule'],
-  attributes: { exclude: ['ruleId'] }
-}).then(response => {
-  console.log(JSON.stringify(response, null, 2));
-});
+// Employees.findAll({
+//   include: ['rule'],
+//   attributes: { exclude: ['ruleId'] }
+// }).then(response => {
+//   console.log(JSON.stringify(response, null, 2));
+// });
 
 // EmployeeRules.findAll({}).then(response => {
 //   console.log(JSON.stringify(response, null, 2));
@@ -34,3 +34,21 @@ Employees.findAll({
 // ).then(response => {
 //   console.log(JSON.stringify(response, null, 2));
 // });
+
+// States.findAll({}).then(response => {
+//   console.log(JSON.stringify(response, null, 2));
+// });
+
+// Cities.create({
+//   name: 'Ibirité',
+//   stateId: 40
+// }).then(response => {
+//   console.log(JSON.stringify(response, null, 2));
+// });
+
+Cities.findAll({
+  include: ['state'],
+  attributes: { exclude: ['stateId'] }
+}).then(response => {
+  console.log(JSON.stringify(response, null, 2));
+});
