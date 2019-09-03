@@ -28,7 +28,7 @@ function verifyToken(authorization) {
       'You need provide the JWT token in header'
     );
 
-  const [bearer, token] = authorization;
+  const [bearer, token] = authorization.split(' ');
   if (!bearer || !token)
     throwResponseStatusAndMessage(400, 'Invalid token formmat');
 
