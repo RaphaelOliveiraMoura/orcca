@@ -12,7 +12,7 @@ const CLERK_RULE_NAME = 'clerk';
 async function authenticate(request, response, next, ruleName) {
   try {
     const { authorization } = request.headers;
-    const payload = decodeJwt(authorization);
+    const payload = verifyToken(authorization);
     const employee = await verifyRule(payload.id, ruleName);
     request.employee = employee;
     return next();
@@ -21,12 +21,16 @@ async function authenticate(request, response, next, ruleName) {
   }
 }
 
-function decodeJwt(token) {
-  if (!token)
+function verifyToken(authorization) {
+  if (!authorization)
     throwResponseStatusAndMessage(
       400,
       'You need provide the JWT token in header'
     );
+
+  const [bearer, token] = authorization;
+  if (!bearer || !token)
+    throwResponseStatusAndMessage(400, 'Invalid token formmat');
 
   const payload = jwt.verifyToken(token);
 
