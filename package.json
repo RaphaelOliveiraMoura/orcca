@@ -10,7 +10,8 @@
     "db:migrate": "npx sequelize-cli db:migrate",
     "db:migrate:undo": "npx sequelize-cli db:migrate:undo:all",
     "db:seed": "npx sequelize-cli db:seed:all",
-    "db:seed:undo": "npx sequelize-cli db:seed:undo:all"
+    "db:seed:undo": "npx sequelize-cli db:seed:undo:all",
+    "test": "jest"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -22,6 +23,8 @@
     "sequelize": "^5.15.0"
   },
   "devDependencies": {
-    "sequelize-cli": "^5.5.0"
+    "jest": "^24.9.0",
+    "sequelize-cli": "^5.5.0",
+    "supertest": "^4.0.2"
   }
 }

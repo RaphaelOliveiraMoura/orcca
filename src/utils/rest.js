@@ -1,7 +1,7 @@
 function catchAndReturnAPIError(response, error) {
   const message = error.message || 'Internal Server Error';
   const status = error.status || 500;
-  return response.status(status).json({ message });
+  return response.status(status).json({ error: message });
 }
 
 function throwResponseStatusAndMessage(status, message) {

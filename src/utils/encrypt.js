@@ -7,10 +7,15 @@ function encrypt(text) {
 }
 
 function compare(encryptText, textWithoutEncrypt) {
-  const decryptText = CryptoJS.AES.decrypt(encryptText, protectKey).toString(
-    CryptoJS.enc.Utf8
-  );
-  return decryptText === textWithoutEncrypt;
+  try {
+    if (!encryptText || !textWithoutEncrypt) return false;
+    const decryptText = CryptoJS.AES.decrypt(encryptText, protectKey).toString(
+      CryptoJS.enc.Utf8
+    );
+    return decryptText === textWithoutEncrypt;
+  } catch (error) {
+    return false;
+  }
 }
 
 module.exports = {
