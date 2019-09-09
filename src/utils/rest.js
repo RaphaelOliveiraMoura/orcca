@@ -11,7 +11,25 @@ function throwResponseStatusAndMessage(status, message) {
   };
 }
 
+function validateParams(values) {
+  const errors = [];
+  values.forEach(([value, name, regex]) => {
+    if (!regex) {
+      const errorMessage = name
+        ? `You need to pass ${name} as parameter`
+        : 'Invalid params';
+      if (!value || (typeof value == 'String' && !value.trim()))
+        errors.push(errorMessage);
+    }
+  });
+  if (errors.length > 0) {
+    const errorMessage = errors.length == 1 ? errors[0] : errors;
+    throwResponseStatusAndMessage(400, errorMessage);
+  }
+}
+
 module.exports = {
   catchAndReturnAPIError,
-  throwResponseStatusAndMessage
+  throwResponseStatusAndMessage,
+  validateParams
 };

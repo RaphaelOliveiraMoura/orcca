@@ -1,10 +1,22 @@
 const { Op } = require('sequelize');
-const Employees = require('../models/Employees');
-const EmployeeRules = require('../models/EmployeeRules');
-const { throwResponseStatusAndMessage } = require('../utils/rest');
+const { Employees, EmployeeRules } = require('../models/index');
+const {
+  throwResponseStatusAndMessage,
+  validateParams
+} = require('../utils/rest');
 
 async function createEmployee(employee) {
   const { name, cpf, login, password, birthDate, phoneNumber, rule } = employee;
+
+  validateParams([
+    [name, 'name'],
+    [cpf, 'cpf'],
+    [login, 'login'],
+    [password, 'password'],
+    [birthDate, 'birth date'],
+    [phoneNumber, 'phone number'],
+    [rule, 'rule']
+  ]);
 
   const [employeeAlreadyExists] = await Employees.findAll({
     where: {
@@ -43,3 +55,7 @@ async function createEmployee(employee) {
     password: undefined
   };
 }
+
+module.exports = {
+  createEmployee
+};

@@ -22,18 +22,18 @@ it('should return a invalid error when try to do login with invalid credentials'
       });
   }
 
-  requestLoginWithInvalidVerification({
+  await requestLoginWithInvalidVerification({
     login: 'douglas123',
     password: 'senhaerrada'
   });
-  requestLoginWithInvalidVerification({
+  await requestLoginWithInvalidVerification({
     login: '',
     password: 'senhaerrada'
   });
-  requestLoginWithInvalidVerification({
+  await requestLoginWithInvalidVerification({
     login: 'douglas123',
     password: ''
   });
-  requestLoginWithInvalidVerification({ password: 'senhaerrada' });
-  requestLoginWithInvalidVerification({});
+  await requestLoginWithInvalidVerification({ password: 'senhaerrada' });
+  await requestLoginWithInvalidVerification({});
 });
