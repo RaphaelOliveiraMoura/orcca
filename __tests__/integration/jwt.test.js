@@ -1,8 +1,8 @@
 const api = require('./global/api');
-const { getAuthorizationEmployee } = require('./global/authentication');
+const { getAdminEmployee } = require('./global/employee');
 
 it('should return the jwt token when send the correct credentials to login', async () => {
-  const employee = await getAuthorizationEmployee();
+  const employee = await getAdminEmployee();
 
   const response = await api.post('/api/login').send({
     login: employee.login,

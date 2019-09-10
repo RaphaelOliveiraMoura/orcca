@@ -18,7 +18,7 @@ const serverConfigurations = {
     database: process.env.DATABASE_TEST_NAME,
     host: process.env.DATABASE_TEST_HOST,
     dialect: process.env.DATABASE_TEST_DIALECT,
-    logging: true
+    logging: process.env.DATABASE_TEST_LOG == 'false' ? false : true
   }
 };
 

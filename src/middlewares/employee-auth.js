@@ -9,11 +9,11 @@ const ADMIN_RULE_NAME = 'admin';
 const SOCIAL_WORKER_RULE_NAME = 'social_worker';
 const CLERK_RULE_NAME = 'clerk';
 
-async function authenticate(request, response, next, ruleName) {
+async function authenticate(request, response, next, rules) {
   try {
     const { authorization } = request.headers;
     const payload = verifyToken(authorization);
-    const employee = await verifyRule(payload.id, ruleName);
+    const employee = await verifyRule(payload.id, rules);
     request.employee = employee;
     return next();
   } catch (error) {
@@ -40,7 +40,7 @@ function verifyToken(authorization) {
   return payload;
 }
 
-async function verifyRule(employeeId, ruleName) {
+async function verifyRule(employeeId, rules) {
   const employeeExists = await Employees.findByPk(employeeId, {
     include: ['rule'],
     attributes: { exclude: ['ruleId', 'password'] }
@@ -50,7 +50,7 @@ async function verifyRule(employeeId, ruleName) {
     throwResponseStatusAndMessage(400, 'This is a token of a invalid employee');
 
   const employee = employeeExists.dataValues;
-  if (employee.rule.description != ruleName)
+  if (!rules.includes(employee.rule.name))
     throwResponseStatusAndMessage(
       400,
       'You dont have permission to access this resource'
@@ -61,11 +61,18 @@ async function verifyRule(employeeId, ruleName) {
 
 module.exports = {
   admin: (request, response, next) =>
-    authenticate(request, response, next, ADMIN_RULE_NAME),
+    authenticate(request, response, next, [
+      ADMIN_RULE_NAME,
+      SOCIAL_WORKER_RULE_NAME,
+      CLERK_RULE_NAME
+    ]),
 
   socialWorker: (request, response, next) =>
-    authenticate(request, response, next, SOCIAL_WORKER_RULE_NAME),
+    authenticate(request, response, next, [
+      SOCIAL_WORKER_RULE_NAME,
+      CLERK_RULE_NAME
+    ]),
 
   clerk: (request, response, next) =>
-    authenticate(request, response, next, CLERK_RULE_NAME)
+    authenticate(request, response, next, [CLERK_RULE_NAME])
 };
