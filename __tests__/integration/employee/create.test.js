@@ -1,5 +1,4 @@
-const { app } = require('../../../src/app');
-const api = require('supertest')(app);
+const api = require('../global/api');
 
 it('should create a user in database', async () => {
   const employee = {
