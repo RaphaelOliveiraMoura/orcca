@@ -5,6 +5,34 @@ const {
   validateParams
 } = require('../utils/rest');
 
+async function verifyIfEmployeeExists(login, cpf) {
+  const [employeeAlreadyExists] = await Employees.findAll({
+    where: {
+      [Op.or]: [{ login }, { cpf }]
+    },
+    raw: true
+  });
+
+  if (employeeAlreadyExists) {
+    throwResponseStatusAndMessage(400, 'Employee already exists');
+  }
+}
+
+async function verifyIfEmployeeRuleExists(rule) {
+  const [ruleExists] = await EmployeeRules.findAll({
+    where: {
+      [Op.or]: [{ id: rule }, { name: rule }]
+    },
+    raw: true
+  });
+
+  if (!ruleExists) {
+    throwResponseStatusAndMessage(400, 'Invalid rule to employee');
+  }
+
+  return ruleExists;
+}
+
 async function createEmployee(employee) {
   const { name, cpf, login, password, birthDate, phoneNumber, rule } = employee;
 
@@ -18,27 +46,8 @@ async function createEmployee(employee) {
     [rule, 'rule']
   ]);
 
-  const [employeeAlreadyExists] = await Employees.findAll({
-    where: {
-      [Op.or]: [{ login }, { cpf }]
-    },
-    raw: true
-  });
-
-  if (employeeAlreadyExists) {
-    throwResponseStatusAndMessage(400, 'Employee already exists');
-  }
-
-  const [ruleExists] = await EmployeeRules.findAll({
-    where: {
-      [Op.or]: [{ id: rule }, { name: rule }]
-    },
-    raw: true
-  });
-
-  if (!ruleExists) {
-    throwResponseStatusAndMessage(400, 'Invalid rule to employee');
-  }
+  await verifyIfEmployeeExists(login, cpf);
+  const employeeRule = await verifyIfEmployeeRuleExists(rule);
 
   const createdEmployee = await Employees.create({
     name,
@@ -47,7 +56,7 @@ async function createEmployee(employee) {
     password,
     birthDate,
     phoneNumber,
-    ruleId: ruleExists.id
+    ruleId: employeeRule.id
   });
 
   return {
