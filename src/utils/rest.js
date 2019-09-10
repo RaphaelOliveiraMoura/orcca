@@ -16,7 +16,7 @@ function validateParams(values) {
   values.forEach(([value, name, regex]) => {
     if (!regex) {
       const errorMessage = name
-        ? `You need to pass ${name} as parameter`
+        ? `${name} is a required parameter`
         : 'Invalid params';
       if (!value || (typeof value == 'String' && !value.trim()))
         errors.push(errorMessage);

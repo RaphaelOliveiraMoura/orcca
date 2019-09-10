@@ -6,8 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     'Employees',
     {
       id: {
-        type: DataTypes.NUMBER,
-        primaryKey: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true
       },
       name: DataTypes.STRING,
       cpf: DataTypes.STRING,

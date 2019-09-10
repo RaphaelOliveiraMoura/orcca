@@ -7,11 +7,12 @@
   "license": "MIT",
   "scripts": {
     "start": "node .",
+    "db:prepare": "npx sequelize-cli db:drop || echo 'Database dropped' && npx sequelize-cli db:create && npm run db:migrate && npm run db:seed",
     "db:migrate": "npx sequelize-cli db:migrate",
     "db:migrate:undo": "npx sequelize-cli db:migrate:undo:all",
     "db:seed": "npx sequelize-cli db:seed:all",
     "db:seed:undo": "npx sequelize-cli db:seed:undo:all",
-    "test": "jest"
+    "test": "export ENV=test && npm run db:prepare && jest"
   },
   "dependencies": {
     "cors": "^2.8.5",

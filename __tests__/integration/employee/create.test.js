@@ -3,9 +3,9 @@ const api = require('supertest')(app);
 
 it('should create a user in database', async () => {
   const employee = {
-    name: 'Raphael',
-    cpf: '12717273662',
-    login: 'raphael',
+    name: 'Débora',
+    cpf: '12717273112',
+    login: 'debora',
     password: '123',
     birthDate: '1999-06-12',
     phoneNumber: '31998204295',

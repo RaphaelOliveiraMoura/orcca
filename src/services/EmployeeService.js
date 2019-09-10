@@ -36,7 +36,7 @@ async function createEmployee(employee) {
     raw: true
   });
 
-  if (ruleExists) {
+  if (!ruleExists) {
     throwResponseStatusAndMessage(400, 'Invalid rule to employee');
   }
 
@@ -51,7 +51,7 @@ async function createEmployee(employee) {
   });
 
   return {
-    ...createdEmployee,
+    ...createdEmployee.dataValues,
     password: undefined
   };
 }

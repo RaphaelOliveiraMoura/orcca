@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
-      'States',
+      'states',
       [
         {
           uf: 'AC',
@@ -119,6 +119,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('States', null, {});
+    return queryInterface.bulkDelete('states', null, {});
   }
 };
