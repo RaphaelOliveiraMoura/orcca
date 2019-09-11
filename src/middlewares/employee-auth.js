@@ -50,6 +50,7 @@ async function verifyRule(employeeId, rules) {
     throwResponseStatusAndMessage(400, 'This is a token of a invalid employee');
 
   const employee = employeeExists.dataValues;
+
   if (!rules.includes(employee.rule.name))
     throwResponseStatusAndMessage(
       400,
@@ -61,18 +62,15 @@ async function verifyRule(employeeId, rules) {
 
 module.exports = {
   admin: (request, response, next) =>
+    authenticate(request, response, next, [ADMIN_RULE_NAME]),
+
+  socialWorker: (request, response, next) =>
+    authenticate(request, response, next, [ADMIN_RULE_NAME, CLERK_RULE_NAME]),
+
+  clerk: (request, response, next) =>
     authenticate(request, response, next, [
       ADMIN_RULE_NAME,
       SOCIAL_WORKER_RULE_NAME,
       CLERK_RULE_NAME
-    ]),
-
-  socialWorker: (request, response, next) =>
-    authenticate(request, response, next, [
-      SOCIAL_WORKER_RULE_NAME,
-      CLERK_RULE_NAME
-    ]),
-
-  clerk: (request, response, next) =>
-    authenticate(request, response, next, [CLERK_RULE_NAME])
+    ])
 };

@@ -1,33 +1,24 @@
 const api = require('./api');
 const { Employees } = require('../../../src/models/index');
+const faker = require('./faker');
 
 const employeeAdmin = {
-  name: 'AdminEmployee',
-  cpf: '11111111111',
-  login: 'admin',
-  password: 'admin',
-  birthDate: '1999-06-12',
-  phoneNumber: '31999999999',
+  ...faker.employee({
+    rule: undefined
+  }),
   ruleId: 1
 };
-
 const employeeSocialWorker = {
-  name: 'SocialWorkerEmployee',
-  cpf: '11111111111',
-  login: 'socialworker',
-  password: 'socialworker',
-  birthDate: '1999-06-12',
-  phoneNumber: '31999999999',
+  ...faker.employee({
+    rule: undefined
+  }),
   ruleId: 2
 };
 
 const employeeClerk = {
-  name: 'ClerkEmployee',
-  cpf: '11111111111',
-  login: 'clerk',
-  password: 'clerk',
-  birthDate: '1999-06-12',
-  phoneNumber: '31999999999',
+  ...faker.employee({
+    rule: undefined
+  }),
   ruleId: 3
 };
 

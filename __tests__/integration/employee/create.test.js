@@ -1,4 +1,7 @@
+const faker = require('../global/faker');
+
 const api = require('../global/api');
+
 const {
   getAdminEmployee,
   getSocialWorkerEmployee,
@@ -6,15 +9,7 @@ const {
 } = require('../global/employee');
 
 it('should create a user in database when a admin make the request', async () => {
-  const employee = {
-    name: 'Débora',
-    cpf: '12717273112',
-    login: 'debora',
-    password: '123',
-    birthDate: '1999-06-12',
-    phoneNumber: '31998204295',
-    rule: 1
-  };
+  const employee = faker.employee();
 
   const { token } = await getAdminEmployee();
 
@@ -44,22 +39,12 @@ it('should return error status 400 when try create a user with invalid params', 
 
   await requestCreateEmployeeWithInvalidParams();
   await requestCreateEmployeeWithInvalidParams({});
-  await requestCreateEmployeeWithInvalidParams({
-    name: '',
-    cpf: '',
-    login: 'raphael',
-    password: '123',
-    birthDate: '1999-06-12',
-    phoneNumber: '31998204295',
-    rule: 1
-  });
-  await requestCreateEmployeeWithInvalidParams({
-    name: '',
-    cpf: '',
-    birthDate: '1999-06-12',
-    phoneNumber: '31998204295',
-    rule: 1
-  });
+  await requestCreateEmployeeWithInvalidParams(
+    faker.employee({ name: '', cpf: '', password: undefined })
+  );
+  await requestCreateEmployeeWithInvalidParams(
+    faker.employee({ name: '', cpf: '' })
+  );
 });
 
 it('should return error when try create employee without permission', async () => {
@@ -67,15 +52,7 @@ it('should return error when try create employee without permission', async () =
     const response = await api
       .post('/api/employee')
       .set({ Authorization: token })
-      .send({
-        name: 'Usuário teste',
-        cpf: '12777778912',
-        login: 'usuarioteste',
-        password: 'usuarioteste',
-        birthDate: '1999-06-12',
-        phoneNumber: '31998204295',
-        rule: 1
-      });
+      .send(faker.employee());
 
     expect(response.body).toHaveProperty('error');
     expect(response.status).toBe(400);
