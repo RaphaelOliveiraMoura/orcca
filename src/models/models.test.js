@@ -11,17 +11,17 @@ const { Employees, EmployeeRules, States, Cities } = require('./index');
 //   console.log(JSON.stringify(response, null, 2));
 // });
 
-// Employees.create({
-//   name: 'Douglas Santos',
-//   cpf: '1271726532',
-//   ruleId: 1,
-//   birthDate: '1999-08-30',
-//   login: 'douglas123',
-//   password: 'senhanova123',
-//   phoneNumber: '3135333526'
-// }).then(response => {
-//   console.log(JSON.stringify(response, null, 2));
-// });
+Employees.create({
+  name: 'Douglas Santos',
+  cpf: '1271726532',
+  ruleId: 1,
+  birthDate: '1999-08-30',
+  login: 'douglas123',
+  password: 'senhanova123',
+  phoneNumber: '3135333526'
+}).then(response => {
+  console.log(JSON.stringify(response, null, 2));
+});
 
 // Employees.update(
 //   {
@@ -46,9 +46,9 @@ const { Employees, EmployeeRules, States, Cities } = require('./index');
 //   console.log(JSON.stringify(response, null, 2));
 // });
 
-Cities.findAll({
-  include: ['state'],
-  attributes: { exclude: ['stateId'] }
-}).then(response => {
-  console.log(JSON.stringify(response, null, 2));
-});
+// Cities.findAll({
+//   include: ['state'],
+//   attributes: { exclude: ['stateId'] }
+// }).then(response => {
+//   console.log(JSON.stringify(response, null, 2));
+// });

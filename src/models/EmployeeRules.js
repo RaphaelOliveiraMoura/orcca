@@ -4,8 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     'EmployeeRules',
     {
       id: {
-        type: DataTypes.NUMBER,
-        primaryKey: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
       },
       name: DataTypes.STRING,
       description: DataTypes.STRING
