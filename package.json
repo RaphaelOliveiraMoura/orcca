@@ -7,11 +7,11 @@
   "license": "MIT",
   "scripts": {
     "start": "node .",
-    "db:prepare": "npx sequelize-cli db:drop || echo 'Database dropped' && npx sequelize-cli db:create && npm run db:migrate && npm run db:seed",
-    "db:migrate": "npx sequelize-cli db:migrate",
-    "db:migrate:undo": "npx sequelize-cli db:migrate:undo:all",
-    "db:seed": "npx sequelize-cli db:seed:all",
-    "db:seed:undo": "npx sequelize-cli db:seed:undo:all",
+    "db:prepare": "yarn sequelize db:drop || echo 'Database dropped' && yarn sequelize db:create && npm run db:migrate && npm run db:seed",
+    "db:migrate": "yarn sequelize db:migrate",
+    "db:migrate:undo": "yarn sequelize db:migrate:undo:all",
+    "db:seed": "yarn sequelize db:seed:all",
+    "db:seed:undo": "yarn sequelize db:seed:undo:all",
     "test": "export ENV=test && npm run db:prepare && jest",
     "test:watch": "watch 'npm run test' ./__tests__"
   },
@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "jest": "^24.9.0",
-    "sequelize-cli": "^5.5.0",
     "supertest": "^4.0.2",
+    "sequelize-cli": "^5.5.0",
     "watch": "^1.0.2"
   }
 }
