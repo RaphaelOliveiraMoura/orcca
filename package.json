@@ -7,11 +7,11 @@
   "license": "MIT",
   "scripts": {
     "start": "node .",
-    "db:prepare": "yarn sequelize db:drop || echo 'Database dropped' && yarn sequelize db:create && npm run db:migrate && npm run db:seed",
-    "db:migrate": "yarn sequelize db:migrate",
-    "db:migrate:undo": "yarn sequelize db:migrate:undo:all",
-    "db:seed": "yarn sequelize db:seed:all",
-    "db:seed:undo": "yarn sequelize db:seed:undo:all",
+    "db:prepare": "./node_modules/.bin/sequelize db:drop || echo 'Database dropped' && ./node_modules/.bin/sequelize db:create && npm run db:migrate && npm run db:seed",
+    "db:migrate": "./node_modules/.bin/sequelize db:migrate",
+    "db:migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo:all",
+    "db:seed": "./node_modules/.bin/sequelize db:seed:all",
+    "db:seed:undo": "./node_modules/.bin/sequelize db:seed:undo:all",
     "test": "export ENV=test && npm run db:prepare && jest",
     "test:watch": "watch 'npm run test' ./__tests__"
   },
