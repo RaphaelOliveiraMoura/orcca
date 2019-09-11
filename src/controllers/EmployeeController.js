@@ -3,8 +3,19 @@ const EmployeeService = require('../services/EmployeeService');
 
 async function createEmployee(request, response) {
   try {
-    const params = request.body;
-    const employee = await EmployeeService.createEmployee(params);
+    const employeeParams = request.body;
+    const employee = await EmployeeService.createEmployee(employeeParams);
+    return response.status(200).json(employee);
+  } catch (error) {
+    catchAndReturnAPIError(response, error);
+  }
+}
+
+async function updateEmployee(request, response) {
+  try {
+    const { id } = request.params;
+    const valuesToUpdate = request.body;
+    const employee = await EmployeeService.updateEmployee(id, valuesToUpdate);
     return response.status(200).json(employee);
   } catch (error) {
     catchAndReturnAPIError(response, error);
@@ -12,5 +23,6 @@ async function createEmployee(request, response) {
 }
 
 module.exports = {
-  createEmployee
+  createEmployee,
+  updateEmployee
 };

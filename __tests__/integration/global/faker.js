@@ -27,5 +27,6 @@ function employee(params) {
 }
 
 module.exports = {
-  employee
+  employee,
+  generate: faker
 };

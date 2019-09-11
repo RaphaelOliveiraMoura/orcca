@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       birthDate: {
         field: 'birth_date',
-        type: DataTypes.DATE
+        type: DataTypes.DATEONLY
       },
       phoneNumber: {
         field: 'phone_number',

@@ -8,5 +8,6 @@ const EmployeeController = require('./controllers/EmployeeController');
 router.post('/login', LoginController.logInEmployee);
 
 router.post('/employee', admin, EmployeeController.createEmployee);
+router.put('/employee/:id', admin, EmployeeController.updateEmployee);
 
 module.exports = router;
