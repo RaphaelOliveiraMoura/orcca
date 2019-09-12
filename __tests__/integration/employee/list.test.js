@@ -18,7 +18,7 @@ it('should return a list with all employees', async () => {
   expect(response.status).toBe(200);
 });
 
-it('should return error when try create employee without permission', async () => {
+it('should return error when try list employees without permission', async () => {
   async function requestListEmployeeWithoutPermission(token) {
     const response = await api
       .get('/api/employees')
