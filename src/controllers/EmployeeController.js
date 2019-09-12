@@ -1,6 +1,15 @@
 const { catchAndReturnAPIError } = require('../utils/rest');
 const EmployeeService = require('../services/EmployeeService');
 
+async function listEmployees(request, response) {
+  try {
+    const employees = await EmployeeService.listEmployees();
+    return response.status(200).json(employees);
+  } catch (error) {
+    catchAndReturnAPIError(response, error);
+  }
+}
+
 async function createEmployee(request, response) {
   try {
     const employeeParams = request.body;
@@ -23,6 +32,7 @@ async function updateEmployee(request, response) {
 }
 
 module.exports = {
+  listEmployees,
   createEmployee,
   updateEmployee
 };

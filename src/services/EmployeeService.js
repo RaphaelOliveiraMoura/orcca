@@ -45,6 +45,11 @@ async function verifyIfEmployeeRuleExists(rule) {
   return ruleExists;
 }
 
+async function listEmployees() {
+  const employees = await Employees.findAll({ raw: true });
+  return employees;
+}
+
 async function createEmployee(employee) {
   const { name, cpf, login, password, birthDate, phoneNumber, rule } = employee;
 
@@ -106,6 +111,7 @@ async function updateEmployee(id, employee) {
 }
 
 module.exports = {
+  listEmployees,
   createEmployee,
   updateEmployee
 };

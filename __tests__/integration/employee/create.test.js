@@ -14,7 +14,7 @@ it('should create a user in database when a admin make the request', async () =>
   const { token } = await getAdminEmployee();
 
   const response = await api
-    .post('/api/employee')
+    .post('/api/employees')
     .set({ Authorization: token })
     .send(employee);
 
@@ -29,7 +29,7 @@ it('should return error status 400 when try create a user with invalid params', 
 
   async function requestCreateEmployeeWithInvalidParams(params) {
     const response = await api
-      .post('/api/employee')
+      .post('/api/employees')
       .set({ Authorization: token })
       .send(params);
 
@@ -50,7 +50,7 @@ it('should return error status 400 when try create a user with invalid params', 
 it('should return error when try create employee without permission', async () => {
   async function requestCreateEmployeeWithoutPermission(token) {
     const response = await api
-      .post('/api/employee')
+      .post('/api/employees')
       .set({ Authorization: token })
       .send(faker.employee());
 

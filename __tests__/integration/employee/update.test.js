@@ -12,12 +12,12 @@ async function createEmployee() {
   const { token } = await getAdminEmployee();
   const employee = faker.employee();
   const { status, body: createdEmployee } = await api
-    .post('/api/employee')
+    .post('/api/employees')
     .set({ Authorization: token })
     .send(employee);
 
-  expect(status).toBe(200);
   expect(createdEmployee).toHaveProperty('id');
+  expect(status).toBe(200);
   return createdEmployee;
 }
 
@@ -32,7 +32,7 @@ it('should create and update a employee in database when a admin make the reques
   };
 
   const response = await api
-    .put(`/api/employee/${createdEmployee.id}`)
+    .put(`/api/employees/${createdEmployee.id}`)
     .set({ Authorization: token })
     .send(updatedEmployee);
 
@@ -54,7 +54,7 @@ it('should return error when try update employee without permission', async () =
     };
 
     const response = await api
-      .put(`/api/employee/${createdEmployee.id}`)
+      .put(`/api/employees/${createdEmployee.id}`)
       .set({ Authorization: token })
       .send(updatedEmployee);
 
