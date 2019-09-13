@@ -1,5 +1,5 @@
-const api = require('./global/api');
-const { getAdminEmployee } = require('./global/employee');
+const api = require('../global/api');
+const { getAdminEmployee } = require('../global/employee');
 
 it('should return the jwt token when send the correct credentials to login', async () => {
   const employee = await getAdminEmployee();

@@ -10,10 +10,13 @@ async function logInEmployee(login, password) {
     where: { login }
   });
   if (!employeeExists) throwResponseStatusAndMessage(400, 'Invalid login');
+
   const employee = employeeExists.dataValues;
-  if (!compare(employee.password, password))
+  const employeePassword = employeeExists.authentication.password;
+
+  if (!compare(employeePassword, password))
     throwResponseStatusAndMessage(400, 'Password invalid');
-  const token = jwt.generateToken(employee.id, employee.rule.description);
+  const token = jwt.generateToken(employee.id, employee.rule.name);
   return {
     ...employee,
     password: undefined,

@@ -4,6 +4,7 @@
 
 - To run the application, you need to have `nodeJs` already installed.
 - A `sql/relational` database local or in cloud configurated with the migrations and seeders.
+- ~~Some script pre setted in package.json was made to run together then `yarn`. Then it's important to have it~~.
 
 ## Installation
 
