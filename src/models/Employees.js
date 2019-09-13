@@ -36,6 +36,28 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         beforeValidate: (employee, options) => {
           employee.password = encrypt(employee.password);
+        },
+        afterFind: (employee, options) => {
+          if (!employee) return employee;
+
+          const hiddenPasswordOnObject = employee => {
+            if (employee.getDataValue) {
+              const password = employee.getDataValue('password');
+              employee.authentication = { password };
+              employee.setDataValue('password', undefined);
+            } else {
+              employee.password = undefined;
+            }
+          };
+
+          if (Array.isArray(employee)) {
+            employee.forEach(currentEmployee => {
+              hiddenPasswordOnObject(currentEmployee);
+            });
+          } else {
+            hiddenPasswordOnObject(employee);
+          }
+          return employee;
         }
       }
     }

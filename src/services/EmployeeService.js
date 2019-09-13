@@ -50,6 +50,12 @@ async function listEmployees() {
   return employees;
 }
 
+async function getEmployee(id) {
+  const [employee] = await Employees.findAll({ where: { id }, raw: true });
+  if (!employee) throwResponseStatusAndMessage(400, "Employee doesn't exists");
+  return employee;
+}
+
 async function createEmployee(employee) {
   const { name, cpf, login, password, birthDate, phoneNumber, rule } = employee;
 
@@ -112,6 +118,7 @@ async function updateEmployee(id, employee) {
 
 module.exports = {
   listEmployees,
+  getEmployee,
   createEmployee,
   updateEmployee
 };

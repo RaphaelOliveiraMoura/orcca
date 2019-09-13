@@ -1,66 +1,58 @@
-// const faker = require('../global/faker');
+const api = require('../global/api');
 
-// const api = require('../global/api');
+const {
+  getAdminEmployee,
+  getSocialWorkerEmployee,
+  getClerkEmployee
+} = require('../global/employee');
 
-// const {
-//   getAdminEmployee,
-//   getSocialWorkerEmployee,
-//   getClerkEmployee
-// } = require('../global/employee');
+it('should get a unique user by id', async () => {
+  const adminEmployee = await getAdminEmployee();
 
-// it('should create a user in database when a admin make the request', async () => {
-//   const employee = faker.employee();
+  const response = await api
+    .get(`/api/employees/${adminEmployee.id}`)
+    .set({ Authorization: adminEmployee.token });
 
-//   const { token } = await getAdminEmployee();
+  expect(response.body).toHaveProperty('id');
+  expect(response.body.id).toEqual(adminEmployee.id);
+  expect(response.body).toHaveProperty('name');
+  expect(response.body.name).toEqual(adminEmployee.name);
+  expect(response.body).not.toHaveProperty('password');
+  expect(response.status).toBe(200);
+});
 
-//   const response = await api
-//     .post('/api/employees')
-//     .set({ Authorization: token })
-//     .send(employee);
+it('should return error status 400 when try get a invalid user', async () => {
+  const { token } = await getAdminEmployee();
 
-//   expect(response.body).toHaveProperty('name');
-//   expect(response.body.name).toEqual(employee.name);
-//   expect(response.body).not.toHaveProperty('password');
-//   expect(response.status).toBe(200);
-// });
+  async function requestGetInvadliEmployee(id) {
+    const response = await api
+      .get(`/api/employees/${id}`)
+      .set({ Authorization: token });
 
-// it('should return error status 400 when try create a user with invalid params', async () => {
-//   const { token } = await getAdminEmployee();
+    expect(response.body).toHaveProperty('error');
+    expect(response.status).toBe(400);
+  }
 
-//   async function requestCreateEmployeeWithInvalidParams(params) {
-//     const response = await api
-//       .post('/api/employees')
-//       .set({ Authorization: token })
-//       .send(params);
+  await requestGetInvadliEmployee(-1);
+  await requestGetInvadliEmployee('invalid');
+});
 
-//     expect(response.body).toHaveProperty('error');
-//     expect(response.status).toBe(400);
-//   }
+it('should return error when try get a employee without permission', async () => {
+  async function requestGetEmployeeWithoutPermission(token, id) {
+    const response = await api
+      .get(`/api/employees/${id}`)
+      .set({ Authorization: token });
 
-//   await requestCreateEmployeeWithInvalidParams();
-//   await requestCreateEmployeeWithInvalidParams({});
-//   await requestCreateEmployeeWithInvalidParams(
-//     faker.employee({ name: '', cpf: '', password: undefined })
-//   );
-//   await requestCreateEmployeeWithInvalidParams(
-//     faker.employee({ name: '', cpf: '' })
-//   );
-// });
+    expect(response.body).toHaveProperty('error');
+    expect(response.status).toBe(400);
+  }
 
-// it('should return error when try create employee without permission', async () => {
-//   async function requestCreateEmployeeWithoutPermission(token) {
-//     const response = await api
-//       .post('/api/employees')
-//       .set({ Authorization: token })
-//       .send(faker.employee());
+  const {
+    token: socialWorkerToken,
+    id: socialWorkerId
+  } = await getSocialWorkerEmployee();
+  const { token: clerkToken, id: clerkId } = await getClerkEmployee();
 
-//     expect(response.body).toHaveProperty('error');
-//     expect(response.status).toBe(400);
-//   }
-
-//   const { token: socialWorkerToken } = await getSocialWorkerEmployee();
-//   const { token: clerkToken } = await getClerkEmployee();
-
-//   await requestCreateEmployeeWithoutPermission(socialWorkerToken);
-//   await requestCreateEmployeeWithoutPermission(clerkToken);
-// });
+  await requestGetEmployeeWithoutPermission(socialWorkerToken, socialWorkerId);
+  await requestGetEmployeeWithoutPermission(clerkToken, clerkId);
+});

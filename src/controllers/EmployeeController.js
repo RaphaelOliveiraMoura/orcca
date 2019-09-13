@@ -10,6 +10,16 @@ async function listEmployees(request, response) {
   }
 }
 
+async function getEmployee(request, response) {
+  try {
+    const { id } = request.params;
+    const employee = await EmployeeService.getEmployee(id);
+    return response.status(200).json(employee);
+  } catch (error) {
+    catchAndReturnAPIError(response, error);
+  }
+}
+
 async function createEmployee(request, response) {
   try {
     const employeeParams = request.body;
@@ -33,6 +43,7 @@ async function updateEmployee(request, response) {
 
 module.exports = {
   listEmployees,
+  getEmployee,
   createEmployee,
   updateEmployee
 };

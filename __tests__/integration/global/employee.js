@@ -32,6 +32,7 @@ async function getAuthorizationToken(employee) {
     });
     return {
       ...employee,
+      id: body.id,
       token: `Bearer ${body.token}`
     };
   }
