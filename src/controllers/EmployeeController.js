@@ -41,9 +41,20 @@ async function updateEmployee(request, response) {
   }
 }
 
+async function deleteEmployee(request, response) {
+  try {
+    const { id } = request.params;
+    const result = await EmployeeService.deleteEmployee(id);
+    return response.status(200).json(result);
+  } catch (error) {
+    catchAndReturnAPIError(response, error);
+  }
+}
+
 module.exports = {
   listEmployees,
   getEmployee,
   createEmployee,
-  updateEmployee
+  updateEmployee,
+  deleteEmployee
 };
