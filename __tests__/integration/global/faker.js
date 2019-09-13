@@ -11,7 +11,10 @@ function employee(params) {
     login: faker.name.firstName(),
     password: faker.random.alphaNumeric(12),
     birthDate: moment(faker.date.past()).format('YYYY-MM-DD'),
-    phoneNumber: faker.phone.phoneNumber(),
+    phoneNumber: faker.random.number({
+      min: 1000000000,
+      max: 99999999999
+    }),
     rule: faker.random.number({
       min: 1,
       max: 3
