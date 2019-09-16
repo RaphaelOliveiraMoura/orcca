@@ -8,8 +8,12 @@ const {
   getClerkEmployee
 } = require('../global/employee');
 
-it('should create a user in database when a admin make the request', async () => {
-  const employee = faker.employee();
+it('should create a employee in database when a admin make the request', async () => {
+  const employee = {
+    ...faker.generateRandomEmployee(),
+    ruleId: undefined,
+    rule: faker.generate.random.number({ min: 1, max: 3 })
+  };
 
   const { token } = await getAdminEmployee();
 
@@ -40,10 +44,10 @@ it('should return error status 400 when try create a user with invalid params', 
   await requestCreateEmployeeWithInvalidParams();
   await requestCreateEmployeeWithInvalidParams({});
   await requestCreateEmployeeWithInvalidParams(
-    faker.employee({ name: '', cpf: '', password: undefined })
+    faker.generateRandomEmployee({ name: '', cpf: '', password: undefined })
   );
   await requestCreateEmployeeWithInvalidParams(
-    faker.employee({ name: '', cpf: '' })
+    faker.generateRandomEmployee({ name: '', cpf: '' })
   );
 });
 
@@ -52,7 +56,7 @@ it('should return error when try create employee without permission', async () =
     const response = await api
       .post('/api/employees')
       .set({ Authorization: token })
-      .send(faker.employee());
+      .send(faker.generateRandomEmployee());
 
     expect(response.body).toHaveProperty('error');
     expect(response.status).toBe(400);

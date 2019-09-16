@@ -5,25 +5,13 @@ const api = require('../global/api');
 const {
   getAdminEmployee,
   getSocialWorkerEmployee,
-  getClerkEmployee
+  getClerkEmployee,
+  createNewEmployee
 } = require('../global/employee');
-
-async function createEmployee() {
-  const { token } = await getAdminEmployee();
-  const employee = faker.employee();
-  const { status, body: createdEmployee } = await api
-    .post('/api/employees')
-    .set({ Authorization: token })
-    .send(employee);
-
-  expect(createdEmployee).toHaveProperty('id');
-  expect(status).toBe(200);
-  return createdEmployee;
-}
 
 it('should create and update a employee in database when a admin make the request', async () => {
   const { token } = await getAdminEmployee();
-  const createdEmployee = await createEmployee();
+  const createdEmployee = await createNewEmployee();
 
   const updatedEmployee = {
     ...createdEmployee,
@@ -44,7 +32,7 @@ it('should create and update a employee in database when a admin make the reques
 });
 
 it('should return error when try update employee without permission', async () => {
-  const createdEmployee = await createEmployee();
+  const createdEmployee = await createNewEmployee();
 
   async function requestCreateEmployeeWithoutPermission(token) {
     const updatedEmployee = {

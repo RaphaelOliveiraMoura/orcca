@@ -1,7 +1,7 @@
 const faker = require('faker');
 const moment = require('moment');
 
-function employee(params) {
+function generateRandomEmployee(params) {
   const randomEmployee = {
     name: faker.name.findName(),
     cpf: faker.random.number({
@@ -15,10 +15,7 @@ function employee(params) {
       min: 1000000000,
       max: 99999999999
     }),
-    rule: faker.random.number({
-      min: 1,
-      max: 3
-    }),
+    ruleId: faker.random.number({ min: 1, max: 3 }),
     ...params
   };
 
@@ -30,6 +27,6 @@ function employee(params) {
 }
 
 module.exports = {
-  employee,
+  generateRandomEmployee,
   generate: faker
 };
