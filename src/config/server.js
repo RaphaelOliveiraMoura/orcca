@@ -3,7 +3,7 @@ require('dotenv').config();
 const serverConfigurations = {
   port: process.env.PORT || 5050,
   protectKey: process.env.PROTECT_KEY,
-  envrironment: process.env.ENV,
+  envrironment: 'test',
   database: {
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,

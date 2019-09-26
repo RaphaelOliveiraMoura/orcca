@@ -1,22 +1,28 @@
-const faker = require('../global/faker');
-
-const api = require('../global/api');
-
 const {
-  getAdminEmployee,
-  getSocialWorkerEmployee,
-  getClerkEmployee,
-  createNewEmployee
-} = require('../global/employee');
+  api,
+  FakerWrapper,
+  EmployeesController,
+  DatabaseController
+} = require('../global');
+
+const { Employees } = require('../../../src/models');
+
+beforeAll(async () => {
+  await DatabaseController.prepareDatabase();
+});
 
 it('should create and update a employee in database when a admin make the request', async () => {
-  const { token } = await getAdminEmployee();
-  const createdEmployee = await createNewEmployee();
+  const { token } = await EmployeesController.admin();
+
+  const createdResponse = await Employees.create(
+    FakerWrapper.generateRandomEmployee()
+  );
+  const createdEmployee = createdResponse.dataValues;
 
   const updatedEmployee = {
     ...createdEmployee,
-    name: faker.generate.name.findName(),
-    login: faker.generate.name.firstName()
+    name: FakerWrapper.generate.name.findName(),
+    login: FakerWrapper.generate.name.firstName()
   };
 
   const response = await api
@@ -32,13 +38,16 @@ it('should create and update a employee in database when a admin make the reques
 });
 
 it('should return error when try update employee without permission', async () => {
-  const createdEmployee = await createNewEmployee();
+  const createdResponse = await Employees.create(
+    FakerWrapper.generateRandomEmployee()
+  );
+  const createdEmployee = createdResponse.dataValues;
 
   async function requestCreateEmployeeWithoutPermission(token) {
     const updatedEmployee = {
       ...createdEmployee,
-      name: faker.generate.name.findName(),
-      login: faker.generate.name.firstName()
+      name: FakerWrapper.generate.name.findName(),
+      login: FakerWrapper.generate.name.firstName()
     };
 
     const response = await api
@@ -50,8 +59,8 @@ it('should return error when try update employee without permission', async () =
     expect(response.status).toBe(400);
   }
 
-  const { token: socialWorkerToken } = await getSocialWorkerEmployee();
-  const { token: clerkToken } = await getClerkEmployee();
+  const { token: socialWorkerToken } = await EmployeesController.socialWorker();
+  const { token: clerkToken } = await EmployeesController.clerk();
 
   await requestCreateEmployeeWithoutPermission(socialWorkerToken);
   await requestCreateEmployeeWithoutPermission(clerkToken);

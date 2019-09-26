@@ -1,17 +1,23 @@
-const faker = require('../global/faker');
-
-const api = require('../global/api');
-
 const {
-  getAdminEmployee,
-  getSocialWorkerEmployee,
-  getClerkEmployee,
-  createNewEmployee
-} = require('../global/employee');
+  api,
+  FakerWrapper,
+  EmployeesController,
+  DatabaseController
+} = require('../global');
+
+const { Employees } = require('../../../src/models');
+
+beforeAll(async () => {
+  await DatabaseController.prepareDatabase();
+});
 
 it('should delete a employee in database when a admin make the request', async () => {
-  const { token } = await getAdminEmployee();
-  const createdEmployee = await createNewEmployee();
+  const { token } = await EmployeesController.admin();
+
+  const createdEmployee = await Employees.create(
+    FakerWrapper.generateRandomEmployee(),
+    { raw: true }
+  );
 
   const response = await api
     .delete(`/api/employees/${createdEmployee.id}`)
@@ -22,7 +28,7 @@ it('should delete a employee in database when a admin make the request', async (
 });
 
 it('should return error when try delete a invalid employee', async () => {
-  const { token } = await getAdminEmployee();
+  const { token } = await EmployeesController.admin();
 
   async function requestDeleteInvalidEmployee(id) {
     const response = await api
@@ -38,7 +44,10 @@ it('should return error when try delete a invalid employee', async () => {
 });
 
 it('should return error when try delete employee without permission', async () => {
-  const createdEmployee = await createNewEmployee();
+  const createdEmployee = await Employees.create(
+    FakerWrapper.generateRandomEmployee(),
+    { raw: true }
+  );
 
   async function requestDeleteEmployeeWithoutPermission(token) {
     const response = await api
@@ -49,8 +58,8 @@ it('should return error when try delete employee without permission', async () =
     expect(response.status).toBe(400);
   }
 
-  const { token: socialWorkerToken } = await getSocialWorkerEmployee();
-  const { token: clerkToken } = await getClerkEmployee();
+  const { token: socialWorkerToken } = await EmployeesController.socialWorker();
+  const { token: clerkToken } = await EmployeesController.clerk();
 
   await requestDeleteEmployeeWithoutPermission(socialWorkerToken);
   await requestDeleteEmployeeWithoutPermission(clerkToken);

@@ -12,7 +12,8 @@
     "db:migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo:all",
     "db:seed": "./node_modules/.bin/sequelize db:seed:all",
     "db:seed:undo": "./node_modules/.bin/sequelize db:seed:undo:all",
-    "test": "export ENV=test && npm run db:prepare && jest",
+    "test": "export ENV=test && jest --runInBand --detectOpenHandles",
+    "test:db": "export ENV=test && npm run db:prepare && jest",
     "test:watch": "watch 'npm run test' ./__tests__"
   },
   "dependencies": {

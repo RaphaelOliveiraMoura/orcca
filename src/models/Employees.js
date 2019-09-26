@@ -1,6 +1,18 @@
 'use strict';
 const { encrypt } = require('../utils/encrypt');
 
+const applyFunctionToObjectOrArray = (object, callback) => {
+  if (!object) return object;
+
+  if (Array.isArray(object)) {
+    object.forEach(currentObj => {
+      return callback(currentObj);
+    });
+  } else {
+    return callback(object);
+  }
+};
+
 module.exports = (sequelize, DataTypes) => {
   const Employees = sequelize.define(
     'Employees',
@@ -34,12 +46,17 @@ module.exports = (sequelize, DataTypes) => {
     {
       tableName: 'employees',
       hooks: {
-        beforeValidate: (employee, options) => {
-          employee.password = encrypt(employee.password);
+        beforeBulkCreate: (employee, _options) => {
+          return applyFunctionToObjectOrArray(employee, employee => {
+            employee.password = encrypt(employee.password);
+          });
         },
-        afterFind: (employee, options) => {
-          if (!employee) return employee;
-
+        beforeValidate: (employee, _options) => {
+          return applyFunctionToObjectOrArray(employee, employee => {
+            employee.password = encrypt(employee.password);
+          });
+        },
+        afterFind: (employee, _options) => {
           const hiddenPasswordOnObject = employee => {
             if (employee.getDataValue) {
               const password = employee.getDataValue('password');
@@ -49,15 +66,7 @@ module.exports = (sequelize, DataTypes) => {
               employee.password = undefined;
             }
           };
-
-          if (Array.isArray(employee)) {
-            employee.forEach(currentEmployee => {
-              hiddenPasswordOnObject(currentEmployee);
-            });
-          } else {
-            hiddenPasswordOnObject(employee);
-          }
-          return employee;
+          return applyFunctionToObjectOrArray(employee, hiddenPasswordOnObject);
         }
       }
     }
