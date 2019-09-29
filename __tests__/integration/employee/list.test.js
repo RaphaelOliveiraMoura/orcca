@@ -1,13 +1,11 @@
-const api = require('../global/api');
+const { api, EmployeesController, DatabaseController } = require('../global');
 
-const {
-  getAdminEmployee,
-  getSocialWorkerEmployee,
-  getClerkEmployee
-} = require('../global/employee');
+beforeAll(async () => {
+  await DatabaseController.prepareDatabase();
+});
 
 it('should return a list with all employees', async () => {
-  const { token } = await getAdminEmployee();
+  const { token } = await EmployeesController.admin();
 
   const response = await api
     .get('/api/employees')
@@ -28,8 +26,8 @@ it('should return error when try list employees without permission', async () =>
     expect(response.status).toBe(400);
   }
 
-  const { token: socialWorkerToken } = await getSocialWorkerEmployee();
-  const { token: clerkToken } = await getClerkEmployee();
+  const { token: socialWorkerToken } = await EmployeesController.socialWorker();
+  const { token: clerkToken } = await EmployeesController.clerk();
 
   await requestListEmployeeWithoutPermission(socialWorkerToken);
   await requestListEmployeeWithoutPermission(clerkToken);

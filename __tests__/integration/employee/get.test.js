@@ -1,28 +1,27 @@
-const api = require('../global/api');
+const { api, EmployeesController, DatabaseController } = require('../global');
 
-const {
-  getAdminEmployee,
-  getSocialWorkerEmployee,
-  getClerkEmployee
-} = require('../global/employee');
+beforeAll(async () => {
+  await DatabaseController.prepareDatabase();
+});
 
 it('should get a unique user by id', async () => {
-  const adminEmployee = await getAdminEmployee();
+  const employee = await EmployeesController.random();
+  const { token } = await EmployeesController.admin();
 
   const response = await api
-    .get(`/api/employees/${adminEmployee.id}`)
-    .set({ Authorization: adminEmployee.token });
+    .get(`/api/employees/${employee.id}`)
+    .set({ Authorization: token });
 
   expect(response.body).toHaveProperty('id');
-  expect(response.body.id).toEqual(adminEmployee.id);
+  expect(response.body.id).toEqual(employee.id);
   expect(response.body).toHaveProperty('name');
-  expect(response.body.name).toEqual(adminEmployee.name);
+  expect(response.body.name).toEqual(employee.name);
   expect(response.body).not.toHaveProperty('password');
   expect(response.status).toBe(200);
 });
 
 it('should return error status 400 when try get a invalid user', async () => {
-  const { token } = await getAdminEmployee();
+  const { token } = await EmployeesController.admin();
 
   async function requestGetInvadliEmployee(id) {
     const response = await api
@@ -47,12 +46,12 @@ it('should return error when try get a employee without permission', async () =>
     expect(response.status).toBe(400);
   }
 
-  const {
-    token: socialWorkerToken,
-    id: socialWorkerId
-  } = await getSocialWorkerEmployee();
-  const { token: clerkToken, id: clerkId } = await getClerkEmployee();
+  const socialWorker = await EmployeesController.socialWorker();
+  const clerk = await EmployeesController.clerk();
 
-  await requestGetEmployeeWithoutPermission(socialWorkerToken, socialWorkerId);
-  await requestGetEmployeeWithoutPermission(clerkToken, clerkId);
+  await requestGetEmployeeWithoutPermission(
+    socialWorker.token,
+    socialWorker.id
+  );
+  await requestGetEmployeeWithoutPermission(clerk.token, clerk.id);
 });

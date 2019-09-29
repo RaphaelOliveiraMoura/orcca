@@ -1,8 +1,11 @@
-const api = require('../global/api');
-const { getAdminEmployee } = require('../global/employee');
+const { api, DatabaseController } = require('../global');
+
+beforeAll(async () => {
+  await DatabaseController.prepareDatabase();
+});
 
 it('should return the jwt token when send the correct credentials to login', async () => {
-  const employee = await getAdminEmployee();
+  const employee = DatabaseController.employees[0];
 
   const response = await api.post('/api/login').send({
     login: employee.login,
