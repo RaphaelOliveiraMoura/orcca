@@ -4,5 +4,14 @@
   "main": "index.js",
   "repository": "https://github.com/RaphaelOliveiraMoura/orcca-backend.git",
   "author": "RaphaelOliveiraMoura <raphaeldeoliveiramoura@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^1.18.2"
+  }
 }
