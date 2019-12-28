@@ -16,7 +16,7 @@
     "dev:debug": "nodemon --inspect src/server.js",
     "fix": "eslint --fix 'src/**/*.js'",
     "pretest": "NODE_ENV=test sequelize db:migrate",
-    "test": "NODE_ENV=test && jest",
+    "test": "NODE_ENV=test && jest --watchAll --runInBand",
     "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
   },
   "devDependencies": {
