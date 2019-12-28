@@ -1,20 +1,6 @@
 version: '3'
 
 services:
-  orcca-api:
-    build: .
-    container_name: orcca-api-container
-    volumes:
-      - .:/home/node/api
-      - /home/node/api/node_modules
-    ports:
-      - '3333:3333'
-    env_file:
-      - .env
-    depends_on:
-      - orcca-postgres
-    networks:
-      - orcca-network
   orcca-postgres:
     image: postgres:11
     container_name: 'orcca-postgres-container'
@@ -23,15 +9,8 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=orcca
-      - POSTGRES_PASSWORD=orcca
-      - POSTGRES_DB=orcca_db
-    networks:
-      - orcca-network
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
 
 volumes:
   postgres:
-
-networks:
-  orcca-network:
-    driver: bridge

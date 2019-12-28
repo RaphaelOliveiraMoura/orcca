@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:10.16.3
 
 RUN mkdir -p /home/node/api/node_modules && chown -R node:node /home/node/api
 
@@ -14,4 +14,4 @@ COPY --chown=node:node . .
 
 EXPOSE 3333
 
-CMD ["yarn", "start"]
+CMD ["yarn", "dev"]

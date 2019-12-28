@@ -1,32 +1,57 @@
 {
   "name": "orcca",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "repository": "https://github.com/RaphaelOliveiraMoura/orcca-backend.git",
   "author": "RaphaelOliveiraMoura <raphaeldeoliveiramoura@gmail.com>",
+  "engines": {
+    "node": "10.16.3"
+  },
   "license": "MIT",
   "scripts": {
-    "start": "sucrase-node src/server.js",
+    "start": "node dist/server.js",
+    "build": "yarn clean && babel src --out-dir dist",
+    "clean": "rm -rf dist && mkdir dist",
     "dev": "nodemon src/server.js",
-    "dev:debug": "nodemon --inspect src/server.js"
+    "dev:debug": "nodemon --inspect src/server.js",
+    "fix": "eslint --fix 'src/**/*.js'",
+    "pretest": "NODE_ENV=test sequelize db:migrate",
+    "test": "NODE_ENV=test && jest",
+    "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
   },
   "devDependencies": {
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/node": "^7.7.4",
+    "@types/jest": "^24.0.25",
     "babel-eslint": "^10.0.3",
-    "eslint": "^6.6.0",
+    "babel-plugin-root-import": "^6.4.1",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.5.0",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-import-resolver-babel-plugin-root-import": "^1.1.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
-    "nodemon": "^1.19.4",
+    "factory-girl": "^5.0.4",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.3",
     "prettier": "^1.18.2",
     "sequelize-cli": "^5.5.1",
-    "sucrase": "^3.10.1"
+    "sqlite3": "^4.1.1",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "date-fns": "^2.0.0-beta.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "faker": "^4.1.0",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.2"
+    "sequelize": "^5.19.6",
+    "yup": "^0.27.0"
   }
 }
