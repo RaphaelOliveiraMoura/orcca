@@ -22,7 +22,7 @@ class SessionController {
     }
 
     const token = jwt.sign(
-      { id: user.id, rule_id: user.rule_id },
+      { user_id: user.id, rule_id: user.rule_id },
       authConfig.secret,
       { expiresIn: authConfig.expiresIn }
     );

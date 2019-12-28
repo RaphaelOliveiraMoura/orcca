@@ -5,7 +5,15 @@ import app from '~/app';
 import factory from '../factories';
 import truncate from '../util/truncate';
 
+import { admin } from '../util/tokens';
+
+let adminToken;
+
 describe('Users', () => {
+  beforeAll(async () => {
+    adminToken = await admin();
+  });
+
   beforeEach(async () => {
     await truncate();
   });
@@ -15,6 +23,7 @@ describe('Users', () => {
 
     const response = await request(app)
       .post('/users')
+      .set({ Authorization: `Bearer ${adminToken}` })
       .send(user);
 
     expect(response.body).toHaveProperty('id');
@@ -26,10 +35,12 @@ describe('Users', () => {
 
     await request(app)
       .post('/users')
+      .set({ Authorization: `Bearer ${adminToken}` })
       .send(user);
 
     const response = await request(app)
       .post('/users')
+      .set({ Authorization: `Bearer ${adminToken}` })
       .send(user);
 
     expect(response.status).toBe(400);
@@ -45,6 +56,7 @@ describe('Users', () => {
 
     const response = await request(app)
       .post('/users')
+      .set({ Authorization: `Bearer ${adminToken}` })
       .send(invalidUser);
 
     expect(response.status).toBe(400);
@@ -60,8 +72,20 @@ describe('Users', () => {
 
     const response = await request(app)
       .post('/users')
+      .set({ Authorization: `Bearer ${adminToken}` })
       .send(invalidUser);
 
     expect(response.status).toBe(400);
+  });
+
+  it('should return a list of all users', async () => {
+    await factory.createMany('User', 5);
+
+    const response = await request(app)
+      .get('/users')
+      .set({ Authorization: `Bearer ${adminToken}` });
+
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(5);
   });
 });
