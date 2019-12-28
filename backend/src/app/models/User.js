@@ -7,9 +7,10 @@ class User extends Model {
     super.init(
       {
         name: Sequelize.STRING,
-        email: Sequelize.STRING,
+        login: Sequelize.STRING,
         password: Sequelize.VIRTUAL,
         password_hash: Sequelize.STRING,
+        cpf: Sequelize.STRING,
       },
       { sequelize }
     );
@@ -25,6 +26,10 @@ class User extends Model {
 
   checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);
+  }
+
+  static associate(models) {
+    this.belongsTo(models.UserRule, { foreignKey: 'rule_id', as: 'rule' });
   }
 }
 
