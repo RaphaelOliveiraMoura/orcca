@@ -4,38 +4,24 @@ import factory from '../factories';
 
 import app from '~/app';
 
-export async function admin() {
-  const user = await factory.create('User', {
-    rule_id: 1,
-  });
+export default async function getToken({ rule = 'admin' }) {
+  try {
+    const rules = {
+      admin: 1,
+      socialWorker: 2,
+      clerk: 3,
+    };
 
-  const response = await request(app)
-    .post('/sessions')
-    .send({ login: user.login, password: user.password });
+    const user = await factory.create('User', {
+      rule_id: rules[rule],
+    });
 
-  return response.body.token;
-}
+    const response = await request(app)
+      .post('/sessions')
+      .send({ login: user.login, password: user.password });
 
-export async function socialWorker() {
-  const user = await factory.create('User', {
-    rule_id: 2,
-  });
-
-  const response = await request(app)
-    .post('/sessions')
-    .send({ login: user.login, password: user.password });
-
-  return response.body.token;
-}
-
-export async function clerk() {
-  const user = await factory.create('User', {
-    rule_id: 3,
-  });
-
-  const response = await request(app)
-    .post('/sessions')
-    .send({ login: user.login, password: user.password });
-
-  return response.body.token;
+    return response.body.token;
+  } catch (error) {
+    console.log(error);
+  }
 }

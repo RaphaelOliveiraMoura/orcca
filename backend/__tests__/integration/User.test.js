@@ -7,15 +7,16 @@ import User from '~/app/models/User';
 import factory from '../factories';
 import truncate from '../util/truncate';
 
-import { admin, clerk } from '../util/tokens';
+import getToken from '../util/tokens';
 
 let adminToken;
 let clerkToken;
 
 describe('Users', () => {
   beforeAll(async () => {
-    adminToken = await admin();
-    clerkToken = await clerk();
+    await truncate();
+    adminToken = await getToken({ rule: 'admin' });
+    clerkToken = await getToken({ rule: 'clerk' });
   });
 
   beforeEach(async () => {

@@ -5,15 +5,16 @@ import app from '~/app';
 import factory from '../factories';
 import truncate from '../util/truncate';
 
-import { socialWorker, clerk } from '../util/tokens';
+import getToken from '../util/tokens';
 
 let socialWorkerToken;
 let clerkToken;
 
 describe('Users', () => {
   beforeAll(async () => {
-    socialWorkerToken = await socialWorker();
-    clerkToken = await clerk();
+    await truncate();
+    socialWorkerToken = await getToken({ rule: 'socialWorker' });
+    clerkToken = await getToken({ rule: 'clerk' });
   });
 
   beforeEach(async () => {
