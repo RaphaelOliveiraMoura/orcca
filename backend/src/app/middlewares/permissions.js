@@ -21,15 +21,3 @@ export async function socialWorker(request, response, next) {
 
   return next();
 }
-
-export async function clerk(request, response, next) {
-  const { rule_id } = request.session;
-
-  if (!rule_id || (rule_id !== 1 && rule_id !== 2 && rule_id !== 3)) {
-    return response
-      .status(401)
-      .json({ error: 'You dont have permission to access this resouce' });
-  }
-
-  return next();
-}
